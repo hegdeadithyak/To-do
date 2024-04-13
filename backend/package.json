@@ -1,0 +1,15 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "A Todo List Maker",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.j"
+  },
+  "author": "Adithya Hegde Kota",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "zod": "^3.22.4"
+  }
+}
