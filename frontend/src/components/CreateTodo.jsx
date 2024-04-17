@@ -1,13 +1,13 @@
 export function CreateTodo() {
     function handleAddTodo() {
-        fetch("http://localhost:3000/todos", {
+        fetch("http://localhost:3000/todo", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                title: "title",
-                description: "description",
+                title: document.querySelector("input[placeholder='title']").value,
+                description: document.querySelector("input[placeholder='description']").value,
             }),
         });
     }
