@@ -1,26 +1,32 @@
+import fs from "fs";
+
+
 async function completeTodo({ todo }) {
-    const response = await fetch("http://localhost:5000/completed", {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            id: todo,
-        }),
+    fs.readFile("http://localhost:3000/completed", "utf8", function (err, data) {
+        if (err) {
+            console.log(err);
+        }
+        const obj = JSON.parse(data);
+        obj.complete = true;
+        fs.writeFile("http://localhost:3000/completed", JSON.stringify(obj), "utf8", function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+        
     });
-    const data = await response.json();
-    console.log(data);
 }
 
 export function Todos({ todos }) {
     return (
         <div>
             {todos.map(function (todo, index) {
+                console.log(todo)
                 return (
                     <div key={index}>
                         <h1>{todo.title}</h1>
                         <h2>{todo.description}</h2>
-                        <button onClick={() => completeTodo({ todo })}>Complete</button>
+                        <button onClick={completeTodo(todo)}>Complete</button>
                     </div>
                 );
             })}
