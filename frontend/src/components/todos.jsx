@@ -1,34 +1,46 @@
-import PropTypes from 'prop-types';
-import {  } from 'react-router-dom';
+import { useState } from "react";
 
-export function Todos({ todos }) {
-    const history = useNavigate();
+export function CreateTodo(props) {
+    // react-query
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
 
-    const handleComplete = () => {
-        history.push(`/completed`); // Redirect to the completed page
-    };
+    return <div>
+        <input id="title" style={{
+            padding: 10,
+            margin: 10
+        }} type="text" placeholder="title" onChange={function(e) {
+            const value = e.target.value;
+            setTitle(e.target.value);
+        }}></input> <br />
+    
+        <input id="desc" style={{
+            padding: 10,
+            margin: 10
+        }} type="text" placeholder="description" onChange={function(e) {
+            const value = e.target.value;
+            setDescription(e.target.value);
+        }}></input> <br />
 
-    return (
-        <div>
-            {todos.map(function (todo, index) {
-                if (!todo || !todo.title || !todo.description) {
-                    console.warn('Invalid todo item:', todo);
-                    return null;
+        <button style={{
+            padding: 10,
+            margin: 10
+        }} onClick={() => {
+            // axios
+            fetch("http://localhost:3000/todo", {
+                method: "POST",
+                body: JSON.stringify({
+                    title: title,
+                    description: description
+                }),
+                headers: {
+                    "Content-type": "application/json"
                 }
-                console.log(todo);
-                return (
-                    <div key={index}>
-                        <h1>{todo.title}</h1>
-                        <h2>{todo.description}</h2>
-                        <button onClick={() => handleComplete(todo.id)}>Complete</button>
-                    </div>
-                );
-            })}
-        </div>
-    );
-
+            })
+                .then(async function(res) {
+                    const json = await res.json();
+                    alert("Todo added");
+                })
+        }}>Add a todo</button>
+    </div>
 }
-   
-Todos.propTypes = {
-    todos: PropTypes.array.isRequired
-};

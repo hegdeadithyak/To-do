@@ -1,24 +1,14 @@
-export function CreateTodo() {
-    function handleAddTodo() {
-        fetch("http://localhost:3000/todo", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                title: document.querySelector("input[placeholder='title']").value,
-                description: document.querySelector("input[placeholder='description']").value,
-            }),
-        });
-    }
-    return (
-        <div>
-            <input type="text" placeholder="title"></input>
-            <br></br>
-            <input type="text" placeholder="description"></input>
-            <br></br>
-            <button onClick={handleAddTodo}>Add a Todo</button>
-        </div>
-    );
+export function Todos({todos}) {
+
+    return <div>
+        {todos.map(function(todo, index) {
+            return <div>
+                <h1>{todo.title}</h1>
+                <h2>{todo.description}</h2>
+                <button>{todo.completed == true ? "Completed" : "Mark as Complete"}</button>
+            </div>
+        })}
+    </div>
 }
 
+export default Todos;
