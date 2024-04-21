@@ -1,41 +1,34 @@
-import fs from "fs";
-
-
-async function completeTodo({ todo }) {
-    fs.readFile("http://localhost:3000/completed", "utf8", function (err, data) {
-        if (err) {
-            console.log(err);
-        }
-        const obj = JSON.parse(data);
-        obj.complete = true;
-        fs.writeFile("http://localhost:3000/completed", JSON.stringify(obj), "utf8", function (err) {
-            if (err) {
-                console.log(err);
-            }
-        });
-        
-    });
-}
+import PropTypes from 'prop-types';
+import {  } from 'react-router-dom';
 
 export function Todos({ todos }) {
+    const history = useNavigate();
+
+    const handleComplete = () => {
+        history.push(`/completed`); // Redirect to the completed page
+    };
+
     return (
         <div>
             {todos.map(function (todo, index) {
-                console.log(todo)
+                if (!todo || !todo.title || !todo.description) {
+                    console.warn('Invalid todo item:', todo);
+                    return null;
+                }
+                console.log(todo);
                 return (
                     <div key={index}>
                         <h1>{todo.title}</h1>
                         <h2>{todo.description}</h2>
-                        <button onClick={completeTodo(todo)}>Complete</button>
+                        <button onClick={() => handleComplete(todo.id)}>Complete</button>
                     </div>
                 );
             })}
         </div>
     );
-}
 
-// function completeTodo({todo}){
-//     if(todo.complete == false){
-//         todo.complete = true;
-//     }
-// }
+}
+   
+Todos.propTypes = {
+    todos: PropTypes.array.isRequired
+};
