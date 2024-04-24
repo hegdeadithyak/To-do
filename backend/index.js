@@ -1,12 +1,65 @@
 const express = require("express")
-const { resourceLimits } = require("worker_threads")
 const app = express()
+const {createParse,updateParse} = require("./types")
+const {todo} = require("./db")
+const cors = require("cors")
 
 app.use(express.json())
+app.use(cors())
 
+app.post("/todo",async function (req,res){
+    // todos =[];
+    const reqst = req.body;
+    const parseload = createParse.safeParse(reqst);
 
-app.get("/todos",(req,res)=>{
-    res.send("Hello There!!")
+    if (!parseload.success){
+        res.status(411).json({
+            msg :  "Wrong inputs badboy."
+        })
+    }
+
+    await todo.create({
+        title : reqst.title,
+        description : reqst.description,
+        complete : false
+    })
+
+    res.json({
+        msg : "Todo Created",
+    });
 })
 
-app.listen(3000)
+app.get("/todos", async function(req, res){
+    const todos = await todo.find({
+        completed : false
+    });
+
+  res.json({
+     todos,
+  });
+});
+
+app.put("/complete",async function(req,res){
+    const createPayload  = req.body;
+    const ParsePayload = updateParse.safeParse(createPayload);
+
+    if (!ParsePayload.success){
+        res.status(411).json({
+            msg : "You sent wrong inputs"
+        })
+    }
+
+    await todo.update({
+        _id : req.body.id,
+    },{
+        completed: true
+    })
+
+    res.json({
+        msg : "Todo has been Marked as Complete."
+    })
+})
+
+app.listen(3000,()=>{
+    console.log("Server active at 3000")
+})
