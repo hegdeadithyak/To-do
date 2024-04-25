@@ -15,7 +15,9 @@ function AddTodo(){
     return <>
         <input type="text" placeholder="Title"></input>
         <br></br>
+        <br></br>
         <input type="text" placeholder="Description"></input>
+        <br></br>
         <br></br>
         <button onClick={handleAddTodo}>Add Todo</button>
     </>

@@ -39,26 +39,26 @@ app.get("/todos", async function(req, res){
   });
 });
 
-app.put("/complete",async function(req,res){
-    const createPayload  = req.body;
+app.put("/complete", async function(req, res) {
+    const createPayload = req.body;
     const ParsePayload = updateParse.safeParse(createPayload);
 
-    if (!ParsePayload.success){
-        res.status(411).json({
-            msg : "You sent wrong inputs"
-        })
+    if (!ParsePayload.success) {
+        return res.status(411).json({
+            msg: "You sent wrong inputs"
+        });
     }
 
-    await todo.update({
-        _id : req.body.id,
-    },{
+    await todo.updateOne({
+        _id: req.body.id,
+    }, {
         completed: true
-    })
+    });
 
-    res.json({
-        msg : "Todo has been Marked as Complete."
-    })
-})
+    return res.json({
+        msg: "Todo has been Marked as Complete."
+    });
+});
 
 app.listen(3000,()=>{
     console.log("Server active at 3000")
