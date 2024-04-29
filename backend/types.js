@@ -1,15 +1,15 @@
-const zod = require('zod');
+const zod = require("zod");
 
 const createParse = zod.object({
-    title : zod.string(),
-    description : zod.string()
-})
+  title: zod.string(),
+  description: zod.string(),
+});
 
 const updateParse = zod.object({
-    id : zod.string()
-})
+  id: zod.string(),
+});
 
 module.exports = {
-    createParse : createParse,
-    updateParse : updateParse
-}
+  createParse: createParse,
+  updateParse: updateParse,
+};
