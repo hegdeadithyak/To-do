@@ -1,4 +1,9 @@
+import { useState } from "react";
+
 function AddTodo() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   function handleAddTodo() {
     fetch("http://localhost:3000/todo", {
       method: "POST",
@@ -6,18 +11,28 @@ function AddTodo() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: document.querySelector("input[placeholder='title']").value,
-        description: document.querySelector("input[placeholder='description']")
-          .value,
+        title: title,
+        description: description,
       }),
     });
   }
+
   return (
     <>
-      <input type="text" placeholder="Title"></input>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      ></input>
       <br></br>
       <br></br>
-      <input type="text" placeholder="Description"></input>
+      <input
+        type="text"
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      ></input>
       <br></br>
       <br></br>
       <button onClick={handleAddTodo}>Add Todo</button>
