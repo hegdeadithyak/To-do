@@ -1,14 +1,14 @@
 const express = require("express")
 const app = express()
 const {createParse,updateParse} = require("./types")
-const {todo} = require("./db")
+const {Todo,Update} = require("./db")
 const cors = require("cors")
 
 app.use(express.json())
 app.use(cors())
 
 app.post("/todo",async function (req,res){
-    // todos =[];
+    // Todos =[];
     const reqst = req.body;
     const parseload = createParse.safeParse(reqst);
 
@@ -18,7 +18,7 @@ app.post("/todo",async function (req,res){
         })
     }
 
-    await todo.create({
+    await Todo.create({
         title : reqst.title,
         description : reqst.description,
         complete : false
@@ -31,7 +31,9 @@ app.post("/todo",async function (req,res){
 
 app.get("/todos", async function(req, res){
 
-    const todos = await todo.find({});
+    const todos = await Todo.find({
+        completed: false
+    });
 
 
   res.json({
@@ -50,8 +52,18 @@ app.put("/complete", async function(req, res) {
     }
     console.log(createPayload);
 
-    const todoId = createPayload.id;
-    await todo.findByIdAndUpdate({_id : todoId}, {complete: true });
+    // const todoId = createPayload.id;
+    
+    console.log(Todo.updateOne({
+        _id: req.body.id
+    }, {
+      completed: true  
+    }))
+    await Todo.updateOne({
+        _id: req.body.id
+    }, {
+      completed: true  
+    })
 
     return res.json({
         msg: "Todo has been Marked as Complete."
