@@ -30,9 +30,9 @@ app.post("/todo",async function (req,res){
 })
 
 app.get("/todos", async function(req, res){
-    const todos = await todo.find({
-        completed : false
-    });
+
+    const todos = await todo.find({});
+
 
   res.json({
      todos,
@@ -48,12 +48,10 @@ app.put("/complete", async function(req, res) {
             msg: "You sent wrong inputs"
         });
     }
+    console.log(createPayload);
 
-    await todo.updateOne({
-        _id: req.body.id,
-    }, {
-        completed: true
-    });
+    const todoId = createPayload.id;
+    await todo.findByIdAndUpdate({_id : todoId}, {complete: true });
 
     return res.json({
         msg: "Todo has been Marked as Complete."

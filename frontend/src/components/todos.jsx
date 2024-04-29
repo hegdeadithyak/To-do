@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 function Todo({todos}){
     function complete(todo){
+        console.log(todo)
         fetch("http://localhost:3000/complete",{
             method :"PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
             body : JSON.stringify({
-                id : todo._id
+                id : todo._id,
             }
             )
         })
